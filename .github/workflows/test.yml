@@ -60,7 +60,7 @@ jobs:
             -p "Write a Python function called multiply(a, b) that returns the product of a and b. Return only the Python function." \
             -n 128 \
             --temp 0.2 \
-            --no-conversation
+            -st
 
       - name: Install pytest
         run: pip install pytest

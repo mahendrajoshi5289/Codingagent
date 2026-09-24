@@ -22,7 +22,8 @@ jobs:
           sudo apt-get install -y \
             build-essential \
             cmake \
-            git
+            git \
+            wget
 
       - name: Clone llama.cpp
         run: |
@@ -37,9 +38,19 @@ jobs:
             --config Release \
             -j$(nproc)
 
-      - name: Verify llama.cpp
+      - name: Download Qwen model
         run: |
-          llama.cpp/build/bin/llama-cli --version
+          mkdir -p model
+
+          wget -O model/qwen2.5-coder-7b-instruct-q4_k_m.gguf \
+            https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF/resolve/main/qwen2.5-coder-7b-instruct-q4_k_m.gguf
+
+      - name: Verify model
+        run: |
+          ls -lh model/
+          llama.cpp/build/bin/llama-cli \
+            -m model/qwen2.5-coder-7b-instruct-q4_k_m.gguf \
+            --version
 
       - name: Install pytest
         run: pip install pytest

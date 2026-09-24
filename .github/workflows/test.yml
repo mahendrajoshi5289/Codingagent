@@ -16,6 +16,27 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Show runner resources
+        run: |
+          echo "=== OS ==="
+          uname -a
+          echo
+
+          echo "=== CPU ==="
+          nproc
+          echo
+
+          echo "=== MEMORY ==="
+          free -h
+          echo
+
+          echo "=== DISK ==="
+          df -h /
+          echo
+
+          echo "=== PYTHON ==="
+          python --version
+
       - name: Install pytest
         run: pip install pytest
 

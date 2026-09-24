@@ -59,7 +59,8 @@ jobs:
             -m model/qwen2.5-coder-7b-instruct-q4_k_m.gguf \
             -p "Write a Python function called multiply(a, b) that returns the product of a and b. Return only the Python function." \
             -n 128 \
-            --temp 0.2
+            --temp 0.2 \
+            --no-conversation
 
       - name: Install pytest
         run: pip install pytest

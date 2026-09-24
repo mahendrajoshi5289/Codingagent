@@ -16,26 +16,30 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Show runner resources
+      - name: Install build tools
         run: |
-          echo "=== OS ==="
-          uname -a
-          echo
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            git
 
-          echo "=== CPU ==="
-          nproc
-          echo
+      - name: Clone llama.cpp
+        run: |
+          git clone --depth 1 https://github.com/ggml-org/llama.cpp.git
 
-          echo "=== MEMORY ==="
-          free -h
-          echo
+      - name: Build llama.cpp
+        run: |
+          cmake -S llama.cpp -B llama.cpp/build \
+            -DCMAKE_BUILD_TYPE=Release
 
-          echo "=== DISK ==="
-          df -h /
-          echo
+          cmake --build llama.cpp/build \
+            --config Release \
+            -j$(nproc)
 
-          echo "=== PYTHON ==="
-          python --version
+      - name: Verify llama.cpp
+        run: |
+          llama.cpp/build/bin/llama-cli --version
 
       - name: Install pytest
         run: pip install pytest
